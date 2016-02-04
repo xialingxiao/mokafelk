@@ -2,6 +2,8 @@ stage_dir: "~/.ansible_stage"
 project_id: "mokafelk"
 kafka_list: 
  - 0
+ - 1
+ - 2
 kafka_port_start: 9092
 zookeeper_client_port_start: 2181
 zookeeper_inner_port_start: 2888
