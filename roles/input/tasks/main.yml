@@ -1,0 +1,15 @@
+- name: create input staging directory
+  file: path={{ stage_dir }}/{{ project_id }}/input/ state=directory
+- name: create logstash configuration directory in input staging directory
+  file: path={{ stage_dir }}/{{ project_id }}/input/config/ state=directory
+- name: create input src directory in logstash staging directory
+  file: path={{ stage_dir }}/{{ project_id }}/input/src/ state=directory
+- name: create input log directory in logstash staging directory
+  file: path={{ stage_dir }}/{{ project_id }}/input/log/ state=directory
+- name: copy dockerfile
+  copy: src=Dockerfile dest={{ stage_dir }}/{{ project_id }}/input/Dockerfile
+- name: copy configuration file
+  template: src=logstash.conf dest={{ stage_dir }}/{{ project_id }}/input/config/logstash.conf
+- name: copy the src file
+  copy: src={{ item.value }} dest={{ stage_dir }}/{{ project_id }}/input/src/{{ item.value }}
+  with_dict: "{{ sources }}"

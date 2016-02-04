@@ -1,0 +1,42 @@
+---
+
+- name: setup
+  hosts: localhost
+  vars_files:
+  - config.yaml
+  vars:
+  - project_stage_dir: "{{ stage_dir }}/{{ project_id }}"
+  roles:
+  - kafka
+  - input
+  - logstash
+  - elasticsearch
+  - kibana
+  tasks:
+  - name: make sure that the staging directory exists
+    file: path={{ stage_dir }} state=directory
+  - name: create project folder at staging directory
+    file: path={{ project_stage_dir }} state=directory
+  - name: copy compose file
+    template: src="templates/docker-compose.yml" dest="{{ project_stage_dir }}/docker-compose.yml"
+  - name: copy compose file for logstash
+    template: src="templates/docker-compose-logstash.yml" dest="{{ project_stage_dir }}/docker-compose-logstash.yml"
+  - name: copy source files to input role files directory
+    copy: src="files/{{item.value}}" dest="roles/input/files/{{ item.value }}"
+    with_dict: "{{ sources }}"
+  - name: create log folder at staging directory
+    file: path={{ project_stage_dir }}/log state=directory
+
+- name: run compose
+  hosts: localhost
+  vars_files:
+  - config.yaml
+  vars:
+  - project_stage_dir: "{{ stage_dir }}/{{ project_id }}"
+  tasks:
+  - name: start clusters
+    command: "docker-compose -f {{ project_stage_dir }}/docker-compose.yml up -d"
+  - name: wait for clusters to stablize 
+    pause: minutes=1
+  - name: start logstash instances
+    command: "docker-compose -f {{ project_stage_dir }}/docker-compose-logstash.yml up -d"

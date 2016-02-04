@@ -1,0 +1,36 @@
+- name: make sure kafka staging directory exists
+  file: path={{ stage_dir }}/{{ project_id }}/kafka state=directory
+- name: copy dockerfile
+  copy: src=Dockerfile dest={{ stage_dir }}/{{ project_id }}/kafka/Dockerfile
+- name: copy supervisord configuration file
+  copy: src=supervisord.conf dest={{ stage_dir }}/{{ project_id }}/kafka/supervisord.conf
+- name: create kafka directory in kafka staging directory
+  file: path={{ stage_dir }}/{{ project_id }}/kafka/{{ item }} state=directory
+  with_items: "{{ kafka_list }}"
+- name: create zookeeper configuration directory in kafka directory
+  file: path={{ stage_dir }}/{{ project_id }}/kafka/{{ item }}/zookeeper state=directory
+  with_items: "{{ kafka_list }}"
+- name: create zookeeper data directory in zookeeper configuration directory
+  file: path={{ stage_dir }}/{{ project_id }}/kafka/{{ item }}/zookeeper/data state=directory
+  with_items: "{{ kafka_list }}"
+- name: create zookeeper log directory in zookeeper configuration directory
+  file: path={{ stage_dir }}/{{ project_id }}/kafka/{{ item }}/zookeeper/log state=directory
+  with_items: "{{ kafka_list }}"
+- name: create kafka configuration directory in kafka directory
+  file: path={{ stage_dir }}/{{ project_id }}/kafka/{{ item }}/kafka state=directory
+  with_items: "{{ kafka_list }}"
+- name: create kafka data directory in kafka configuration directory
+  file: path={{ stage_dir }}/{{ project_id }}/kafka/{{ item }}/kafka/data state=directory
+  with_items: "{{ kafka_list }}"
+- name: create kafka log directory in kafka configuration directory
+  file: path={{ stage_dir }}/{{ project_id }}/kafka/{{ item }}/kafka/log state=directory
+  with_items: "{{ kafka_list }}"
+- name: copy zookeeper properties file
+  template: src=zookeeper.properties dest={{ stage_dir }}/{{ project_id }}/kafka/{{ item }}/zookeeper/zookeeper.properties
+  with_items: "{{ kafka_list }}"
+- name: copy zookeeper myid file
+  template: src=myid dest={{ stage_dir }}/{{ project_id }}/kafka/{{ item }}/zookeeper/data/myid
+  with_items: "{{ kafka_list }}"
+- name: copy kafka properties file
+  template: src=kafka.properties dest={{ stage_dir }}/{{ project_id }}/kafka/{{ item }}/kafka/kafka.properties
+  with_items: "{{ kafka_list }}"

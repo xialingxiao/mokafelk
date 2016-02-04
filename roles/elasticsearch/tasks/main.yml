@@ -1,0 +1,16 @@
+- name: create elasticsearch staging directory
+  file: path={{ stage_dir }}/{{ project_id }}/elasticsearch state=directory
+- name: create elasticsearch configuration directory in elasticsearch staging directory
+  file: path={{ stage_dir }}/{{ project_id }}/elasticsearch/config state=directory
+- name: create elasticsearch scripts directory in elasticsearch staging directory
+  file: path={{ stage_dir }}/{{ project_id }}/elasticsearch/scripts state=directory
+- name: create data folder
+  file: path={{ stage_dir }}/{{ project_id }}/elasticsearch/data state=directory
+- name: create log folder
+  file: path={{ stage_dir }}/{{ project_id }}/elasticsearch/log state=directory
+- name: copy dockerfile
+  copy: src=Dockerfile dest={{ stage_dir }}/{{ project_id }}/elasticsearch/Dockerfile
+- name: copy elasticsearch configuration file
+  template: src=elasticsearch.yml dest={{ stage_dir }}/{{ project_id }}/elasticsearch/config/elasticsearch.yml
+- name: copy logging configuration file for elasticsearch
+  copy: src=logging.yml dest={{ stage_dir }}/{{ project_id }}/elasticsearch/config/logging.yml

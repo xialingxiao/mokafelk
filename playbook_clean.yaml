@@ -1,0 +1,14 @@
+---
+
+- name: clean up
+  hosts: localhost
+  vars_files:
+  - config.yaml
+  vars:
+  - project_stage_dir: "{{ stage_dir }}/{{ project_id }}"
+  tasks:
+  - name: remove source files from input role files directory
+    file: path="roles/input/files/{{ item.value }}" state=absent
+    with_dict: "{{ sources }}"
+  - name: remove project staging directory
+    file: path={{ project_stage_dir }} state=absent

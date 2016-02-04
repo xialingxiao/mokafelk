@@ -1,0 +1,12 @@
+- name: create kibana staging directory
+  file: path={{ stage_dir }}/{{ project_id }}/kibana state=directory
+- name: create kibana configuration directory in kibana staging directory
+  file: path={{ stage_dir }}/{{ project_id }}/kibana/config state=directory
+- name: create kibana logging directory in kibana staging directory
+  file: path={{ stage_dir }}/{{ project_id }}/kibana/log state=directory
+- name: copy dockerfile
+  copy: src=Dockerfile dest={{ stage_dir }}/{{ project_id }}/kibana/Dockerfile
+- name: copy kibana configuration file
+  template: src=kibana.yaml dest={{ stage_dir }}/{{ project_id }}/kibana/config/kibana.yaml
+- name: initialize log file if not exist
+  file: path={{ stage_dir }}/{{ project_id }}/kibana/log/kibana.log state=touch

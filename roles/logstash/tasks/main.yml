@@ -1,0 +1,12 @@
+- name: create logstash staging directory
+  file: path={{ stage_dir }}/{{ project_id }}/logstash/ state=directory
+- name: create logstash configuration directory in logstash staging directory
+  file: path={{ stage_dir }}/{{ project_id }}/logstash/config/ state=directory
+- name: create logstash log directory in logstash staging directory
+  file: path={{ stage_dir }}/{{ project_id }}/logstash/log/ state=directory
+- name: copy dockerfile
+  copy: src=Dockerfile dest={{ stage_dir }}/{{ project_id }}/logstash/Dockerfile
+- name: copy configuration file
+  template: src=logstash.conf dest={{ stage_dir }}/{{ project_id }}/logstash/config/logstash.conf
+- name: copy elasticsearch mapping template for logstash
+  template: src=elasticsearch_template.json dest={{ stage_dir }}/{{ project_id }}/logstash/config/elasticsearch_template.json

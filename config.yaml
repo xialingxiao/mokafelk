@@ -1,0 +1,14 @@
+stage_dir: "~/.ansible_stage"
+project_id: "mokafelk"
+kafka_list: 
+ - 0
+kafka_port_start: 9092
+zookeeper_client_port_start: 2181
+zookeeper_inner_port_start: 2888
+zookeeper_leader_selection_port_start: 3888
+elasticsearch_port: 9200
+kibana_port: 5601
+topics:
+ - test
+sources:
+  test: "test.log"

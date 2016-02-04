@@ -1,0 +1,38 @@
+################################################################################
+# Abstract:
+# Main docker-compose implimentation of mokafelk
+#
+# Description:
+#
+#
+# Copyright (c) 2016 Lingxiao Xia [s1006595991 at gmail dot com]
+# Project: mokafelk
+# Creation: Lingxiao Xia
+# Creation Date: 2015-02-03
+################################################################################
+input:
+  build: ./input
+  volumes:
+   - ./input/config/:/tmp/mokafelk/logstash/config
+   - ./input/src/:/tmp/mokafelk/logstash/src
+   - ./input/log/:/tmp/mokafelk/logstash/log
+  external_links:
+   - {{ project_id }}_elasticsearch_1:elasticsearch
+{% for kafka_id in kafka_list %}
+   - {{ project_id }}_kafka{{ kafka_id }}_1:kafka{{ kafka_id }}
+{% endfor %}
+  hostname: input
+  restart: always
+
+logstash:
+  build: ./logstash
+  volumes:
+   - ./logstash/config/:/tmp/mokafelk/logstash/config
+   - ./logstash/log/:/tmp/mokafelk/logstash/log
+  external_links:
+   - {{ project_id }}_elasticsearch_1:elasticsearch
+{% for kafka_id in kafka_list %}
+   - {{ project_id }}_kafka{{ kafka_id }}_1:kafka{{ kafka_id }}
+{% endfor %}
+  hostname: logstash
+  restart: always

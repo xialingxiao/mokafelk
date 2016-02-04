@@ -1,0 +1,17 @@
+---
+
+- name: stop and remove containers
+  hosts: localhost
+  vars_files:
+  - config.yaml
+  vars:
+  - project_stage_dir: "{{ stage_dir }}/{{ project_id }}"
+  tasks:
+  - name: stop logstash
+    command: "docker-compose -f {{ project_stage_dir }}/docker-compose-logstash.yml stop"
+  - name: stop the cluster
+    command: "docker-compose -f {{ project_stage_dir }}/docker-compose.yml stop"
+  - name: remove logstash
+    command: "docker-compose -f {{ project_stage_dir }}/docker-compose-logstash.yml rm -vf"
+  - name: remove containers
+    command: "docker-compose -f {{ project_stage_dir }}/docker-compose.yml rm -vf"
