@@ -13,8 +13,8 @@
 ################################################################################
 --> 
 
-# Ansible controlled dockerized mock Kafka and Elasticsearch-Logstash-Kibana servers for testing msgglass 
-It uses `ansible` to spin up a `kafka` cluster. It also spins up a whole `ELK` stack which consumes from the `kafka` containers so that you have near real-time view of your data. This project is designed for testing another github project named `msgglass`, it could be used for testing any `kafka` consumer agent in theory. No security measure is included to protect your data. Use under safe environment ONLY. DO NOT use in production.
+# Ansible controlled Dockerized mock Kafka and Elasticsearch-Logstash-Kibana servers
+It uses `ansible` to spin up a `kafka` cluster. It also spins up a whole `ELK` stack which consumes from the `kafka` containers so that you have near real-time view of your data. This project is designed for testing another github project named `msgglass`, it could be used for testing any `kafka` consumer agent in theory. No security measure is included to protect your data. Ports are open for all for the `Kafka` cluster. Use inside an intranet or under safe conditions ONLY. DO NOT use in production.
 
 ## Pre-requisite 
 This project uses `docker`, `docker-compose` and `ansible` so please make sure you have them installed. Please also configure your `/etc/ansible/hosts` accordingly to include a host called `localhost` which points to `127.0.0.1`.
