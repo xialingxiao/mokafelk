@@ -10,41 +10,42 @@
 # Creation: Lingxiao Xia
 # Creation Date: 2015-02-03
 ################################################################################
+version: '2'
+
+services:
 {% for kafka_id in kafka_list %}
-kafka{{ kafka_id }}:
-  build: ./kafka/
-  volumes:
-   - ./kafka/{{ kafka_id }}/zookeeper/:/tmp/mokafelk/zookeeper
-   - ./kafka/{{ kafka_id }}/kafka/:/tmp/mokafelk/kafka
-  ports:
-   - 0.0.0.0:{{ kafka_port_start+kafka_id }}:{{ kafka_port_start+kafka_id }}
-   - 0.0.0.0:{{ zookeeper_client_port_start+kafka_id }}:{{ zookeeper_client_port_start+kafka_id }}
-   - 0.0.0.0:{{ zookeeper_inner_port_start+kafka_id }}:{{ zookeeper_inner_port_start+kafka_id }}
-   - 0.0.0.0:{{ zookeeper_leader_selection_port_start+kafka_id }}:{{ zookeeper_leader_selection_port_start+kafka_id }}
-  hostname: kafka{{ kafka_id }}
-  restart: always
+    kafka{{ kafka_id }}:
+        build: ./kafka/
+        volumes:
+            - ./kafka/{{ kafka_id }}/zookeeper/:/tmp/mokafelk/zookeeper
+            - ./kafka/{{ kafka_id }}/kafka/:/tmp/mokafelk/kafka
+        ports:
+            - 127.0.0.1:{{ kafka_port_start+kafka_id }}:{{ kafka_port_start+kafka_id }}
+            - 127.0.0.1:{{ zookeeper_client_port_start+kafka_id }}:{{ zookeeper_client_port_start+kafka_id }}
+            - 127.0.0.1:{{ zookeeper_inner_port_start+kafka_id }}:{{ zookeeper_inner_port_start+kafka_id }}
+            - 127.0.0.1:{{ zookeeper_leader_selection_port_start+kafka_id }}:{{ zookeeper_leader_selection_port_start+kafka_id }}
+        hostname: kafka{{ kafka_id }}
+        restart: always
 
 {% endfor %}
-elasticsearch:
-  build: ./elasticsearch
-  volumes:
-   - ./elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/elasticsearch-2.2.0/config/elasticsearch.yml
-   - ./elasticsearch/config/logging.yml:/usr/share/elasticsearch/elasticsearch-2.2.0/config/logging.yml
-   - ./elasticsearch/data/:/tmp/mokafelk/data 
-   - ./elasticsearch/log/:/tmp/mokafelk/log 
-  ports:
-   - 127.0.0.1:{{ elasticsearch_port }}:{{ elasticsearch_port }}
-  hostname: elasticsearch
-  restart: always
+    elasticsearch:
+        build: ./elasticsearch
+        volumes:
+            - ./elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/elasticsearch-2.2.0/config/elasticsearch.yml
+            - ./elasticsearch/config/logging.yml:/usr/share/elasticsearch/elasticsearch-2.2.0/config/logging.yml
+            - ./elasticsearch/data/:/tmp/mokafelk/data 
+            - ./elasticsearch/log/:/tmp/mokafelk/log 
+        ports:
+            - 127.0.0.1:{{ elasticsearch_port }}:{{ elasticsearch_port }}
+        hostname: elasticsearch
+        restart: always
 
-kibana:
-  build: ./kibana
-  volumes:
-   - ./kibana/config/:/tmp/mokafelk/kibana/config/
-   - ./kibana/log/:/tmp/mokafelk/kibana/log/
-  ports:
-   - 127.0.0.1:{{ kibana_port }}:{{ kibana_port }}
-  links:
-   - elasticsearch
-  hostname: kibana
-  restart: always
+    kibana:
+        build: ./kibana
+        volumes:
+            - ./kibana/config/:/tmp/mokafelk/kibana/config/
+            - ./kibana/log/:/tmp/mokafelk/kibana/log/
+        ports:
+            - 127.0.0.1:{{ kibana_port }}:{{ kibana_port }}
+        hostname: kibana
+        restart: always

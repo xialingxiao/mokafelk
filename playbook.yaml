@@ -6,13 +6,7 @@
   - config.yaml
   vars:
   - project_stage_dir: "{{ stage_dir }}/{{ project_id }}"
-  roles:
-  - kafka
-  - input
-  - logstash
-  - elasticsearch
-  - kibana
-  tasks:
+  pre_tasks:
   - name: make sure that the staging directory exists
     file: path={{ stage_dir }} state=directory
   - name: create project folder at staging directory
@@ -24,8 +18,12 @@
   - name: copy source files to input role files directory
     copy: src="files/{{item.value}}" dest="roles/input/files/{{ item.value }}"
     with_dict: "{{ sources }}"
-  - name: create log folder at staging directory
-    file: path={{ project_stage_dir }}/log state=directory
+  roles:
+  - kafka
+  - input
+  - logstash
+  - elasticsearch
+  - kibana  
 
 - name: run compose
   hosts: localhost

@@ -10,29 +10,36 @@
 # Creation: Lingxiao Xia
 # Creation Date: 2015-02-03
 ################################################################################
-input:
-  build: ./input
-  volumes:
-   - ./input/config/:/tmp/mokafelk/logstash/config
-   - ./input/src/:/tmp/mokafelk/logstash/src
-   - ./input/log/:/tmp/mokafelk/logstash/log
-  external_links:
-   - {{ project_id }}_elasticsearch_1:elasticsearch
-{% for kafka_id in kafka_list %}
-   - {{ project_id }}_kafka{{ kafka_id }}_1:kafka{{ kafka_id }}
-{% endfor %}
-  hostname: input
-  restart: always
+version: '2'
 
-logstash:
-  build: ./logstash
-  volumes:
-   - ./logstash/config/:/tmp/mokafelk/logstash/config
-   - ./logstash/log/:/tmp/mokafelk/logstash/log
-  external_links:
-   - {{ project_id }}_elasticsearch_1:elasticsearch
+services:
+    input:
+        build: ./input
+        volumes:
+            - ./input/config/:/tmp/mokafelk/logstash/config
+            - ./input/src/:/tmp/mokafelk/logstash/src
+            - ./input/log/:/tmp/mokafelk/logstash/log
+        external_links:
 {% for kafka_id in kafka_list %}
-   - {{ project_id }}_kafka{{ kafka_id }}_1:kafka{{ kafka_id }}
+            - kafka{{ kafka_id }}
 {% endfor %}
-  hostname: logstash
-  restart: always
+        hostname: input
+        restart: always
+
+    logstash:
+        build: ./logstash
+        volumes:
+            - ./logstash/config/:/tmp/mokafelk/logstash/config
+            - ./logstash/log/:/tmp/mokafelk/logstash/log
+        external_links:
+            - elasticsearch
+{% for kafka_id in kafka_list %}
+            - kafka{{ kafka_id }}
+{% endfor %}
+        hostname: logstash
+        restart: always
+
+networks:
+    default:
+        external:
+            name: {{ project_id }}_default
