@@ -14,7 +14,7 @@
 --> 
 
 # Ansible controlled Dockerized mock Kafka and Elasticsearch-Logstash-Kibana servers
-It uses `ansible` to spin up a `kafka` cluster. It also spins up a whole `ELK` stack which consumes from the `kafka` containers so that you have near real-time view of your data. This project is designed for testing another github project named `msgglass`, it could be used for testing any `kafka` producer and consumer agent in theory. No security measure is included to protect your data. Even though all port are only open to `127.0.0.1` by default, you are strongly advised to use this project inside an intranet or under safe conditions ONLY. DO NOT use in production.
+It uses `ansible` to spin up a `kafka` cluster. It also spins up a whole `ELK` stack which consumes from the `kafka` containers so that you have near real-time view of your data. This project is designed for testing another github project named `msgglass`, it could be used for testing any `kafka` producer and consumer agents in theory. No security measure is included to protect your data. Even though all port are only open to `127.0.0.1` by default, you are strongly advised to use this project inside an intranet or under safe conditions ONLY. DO NOT use in production.
 
 This file uses some `jinja2` notations and the variables are specified in `config.yaml`.
 
