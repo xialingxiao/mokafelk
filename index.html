@@ -24,7 +24,7 @@
 <h1>
 <a id="ansible-controlled-dockerized-mock-kafka-and-elasticsearch-logstash-kibana-servers" class="anchor" href="#ansible-controlled-dockerized-mock-kafka-and-elasticsearch-logstash-kibana-servers" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Ansible controlled Dockerized mock Kafka and Elasticsearch-Logstash-Kibana servers</h1>
 
-<p>It uses <code>ansible</code> to spin up a <code>kafka</code> cluster. It also spins up a whole <code>ELK</code> stack which consumes from the <code>kafka</code> containers so that you have near real-time view of your data. This project is designed for testing another github project named <code>msgglass</code>, it could be used for testing any <code>kafka</code> consumer agent in theory. No security measure is included to protect your data. Use inside an intranet or under safe conditions ONLY. DO NOT use in production.</p>
+<p>It uses <code>ansible</code> to spin up a <code>kafka</code> cluster. It also spins up a whole <code>ELK</code> stack which consumes from the <code>kafka</code> containers so that you have near real-time view of your data. This project is designed for testing another github project named <code>msgglass</code>, it could be used for testing any <code>kafka</code> producer and consumer agents in theory. No security measure is included to protect your data. Even though all port are only open to <code>127.0.0.1</code> by default, you are strongly advised to use this project inside an intranet or under safe conditions ONLY. DO NOT use in production.</p>
 
 <p>This file uses some <code>jinja2</code> notations and the variables are specified in <code>config.yaml</code>.</p>
 
@@ -36,7 +36,7 @@
 <h2>
 <a id="set-up" class="anchor" href="#set-up" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Set up</h2>
 
-<p>The project runs a configurable list of <code>Kafka</code> servers and the ELK stack locally at a staging directory specified in <code>config.yml</code>. It takes <code>json</code> formatted log files and put the entries into a <code>kafka</code> topic as specified in <code>sources</code> in <code>config.yaml</code>. All input files have to be stored in <code>files</code> directory.</p>
+<p>The project runs a configurable list of <code>Kafka</code> servers and the <code>ELK</code> stack locally at a staging directory specified in <code>config.yml</code>. You have the option to load some json formatted log files into the <code>Kafka</code> cluster on start up by specifying the corresponding topic in <code>topics</code> and <code>sources</code> in <code>config.yaml</code>. The input log files should be placed in the <code>files</code> directory. This is mainly used for testing <code>Kafka</code> consumer agents or message triggers.  If you are testing producer agents, you do not need to add input files but you do still need to add the topics you will be posting to to <code>topics</code> in <code>config.yaml</code> so that the elasticsearch instance knows to consume from them.</p>
 
 <h2>
 <a id="run" class="anchor" href="#run" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Run</h2>
