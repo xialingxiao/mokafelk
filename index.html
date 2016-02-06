@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>Mokafelk by xialingxiao</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">Mokafelk</h1>
+      <h2 class="project-tagline">Ansible controlled Dockerized mock Kafka and Elaticsearch-Logstash-Kibana servers for testing Kafka producer and consumer agents</h2>
+      <a href="https://github.com/xialingxiao/mokafelk" class="btn">View on GitHub</a>
+      <a href="https://github.com/xialingxiao/mokafelk/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/xialingxiao/mokafelk/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+       
+
+<h1>
+<a id="ansible-controlled-dockerized-mock-kafka-and-elasticsearch-logstash-kibana-servers" class="anchor" href="#ansible-controlled-dockerized-mock-kafka-and-elasticsearch-logstash-kibana-servers" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Ansible controlled Dockerized mock Kafka and Elasticsearch-Logstash-Kibana servers</h1>
+
+<p>It uses <code>ansible</code> to spin up a <code>kafka</code> cluster. It also spins up a whole <code>ELK</code> stack which consumes from the <code>kafka</code> containers so that you have near real-time view of your data. This project is designed for testing another github project named <code>msgglass</code>, it could be used for testing any <code>kafka</code> consumer agent in theory. No security measure is included to protect your data. Use inside an intranet or under safe conditions ONLY. DO NOT use in production.</p>
+
+<p>This file uses some <code>jinja2</code> notations and the variables are specified in <code>config.yaml</code>.</p>
+
+<h2>
+<a id="pre-requisite" class="anchor" href="#pre-requisite" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Pre-requisite</h2>
+
+<p>This project uses <code>docker 1.10.0</code> or higher, <code>docker-compose 1.6.0</code> or higher and <code>ansible 2.0.0.2</code> or higher so please make sure you have them installed. Please also configure your <code>/etc/ansible/hosts</code> accordingly to include a host called <code>localhost</code> which points to <code>127.0.0.1</code>.</p>
+
+<h2>
+<a id="set-up" class="anchor" href="#set-up" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Set up</h2>
+
+<p>The project runs a configurable list of <code>Kafka</code> servers and the ELK stack locally at a staging directory specified in <code>config.yml</code>. It takes <code>json</code> formatted log files and put the entries into a <code>kafka</code> topic as specified in <code>sources</code> in <code>config.yaml</code>. All input files have to be stored in <code>files</code> directory.</p>
+
+<h2>
+<a id="run" class="anchor" href="#run" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Run</h2>
+
+<p>To create/restart the servers:</p>
+
+<pre><code>ansible-playbook playbook.yaml
+</code></pre>
+
+<p>It would take a long time for <code>docker</code> to build the images the first time around depending on the internet speed. It might appear to be stuck at <code>run compose</code> but really it is just downloading all the components. Be patient and let the build finish.</p>
+
+<p>To access <code>kafka</code>, you will need a <code>zookeeper</code> connection string. <code>zookeeper</code> runs at <code>"{% for kafka_id in kafka_list %}0.0.0.0:{{ zookeeper_client_port_start + kafka_id }}{% if not loop.last %},{% endif %}{% endfor %}"</code>. <code>zookeeper</code> connection string by default is <code>127.0.0.1:2181,127.0.0.1:2182,127.0.0.1:2183</code>.</p>
+
+<p>To access <code>kibana</code>, point your browser to <code>127.0.0.1:{{ kibana_port }}</code> which by defaul is <code>127.0.0.1:5601</code>.</p>
+
+<p>To manage the <code>elasticsearch</code> instance, point your browser to <code>127.0.0.1:{{ elasticsearch_port }}/_plugin/kopf/</code> which by defaul is <code>127.0.0.1:9200/_plugin/kopf/</code>.</p>
+
+<p>To stop and remove the servers:</p>
+
+<pre><code>ansible-playbook playbook_stop.yaml
+</code></pre>
+
+<p>Because some of the files are generated using another role(<code>elasticsearch</code>), use <code>sudo</code> for removing those files. 
+To remove the generated directory(<strong>irreversible</strong>):</p>
+
+<pre><code>sudo ansible-playbook playbook_clean.yaml
+</code></pre>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/xialingxiao/mokafelk">Mokafelk</a> is maintained by <a href="https://github.com/xialingxiao">xialingxiao</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
