@@ -24,7 +24,7 @@
 <h1>
 <a id="ansible-controlled-dockerized-mock-kafka-and-elasticsearch-logstash-kibana-servers" class="anchor" href="#ansible-controlled-dockerized-mock-kafka-and-elasticsearch-logstash-kibana-servers" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Ansible controlled Dockerized mock Kafka and Elasticsearch-Logstash-Kibana servers</h1>
 
-<p>It uses <code>ansible</code> to spin up a <code>kafka</code> cluster. It also spins up a whole <code>ELK</code> stack which consumes from the <code>kafka</code> containers so that you have near real-time view of your data. This project is designed for testing another github project named <code>msgglass</code>, it could be used for testing any <code>kafka</code> producer and consumer agents in theory. No security measure is included to protect your data. Even though all port are only open to <code>127.0.0.1</code> by default, you are strongly advised to use this project inside an intranet or under safe conditions ONLY. DO NOT use in production.</p>
+<p>It uses <code>Ansible</code> to spin up a <code>Kafka</code> cluster. It also spins up a whole <code>ELK</code> stack which consumes from the <code>Kafka</code> containers so that you have near real-time view of your data. This project is designed for testing another github project named <code>msgglass</code>, it could be used for testing any <code>Kafka</code> producer and consumer agents in theory. No security measure is included to protect your data. Even though all port are only open to <code>127.0.0.1</code> by default, you are strongly advised to use this project inside an intranet or under safe conditions ONLY. DO NOT use in production.</p>
 
 <p>This file uses some <code>jinja2</code> notations and the variables are specified in <code>config.yaml</code>.</p>
 
@@ -46,13 +46,13 @@
 <pre><code>ansible-playbook playbook.yaml
 </code></pre>
 
-<p>It would take a long time for <code>docker</code> to build the images the first time around depending on the internet speed. It might appear to be stuck at <code>run compose</code> but really it is just downloading all the components. Be patient and let the build finish.</p>
+<p>It would take a long time for <code>Docker</code> to build the images the first time around depending on the internet speed. It might appear to be stuck at <code>run compose</code> but really it is just downloading all the components. Be patient and let the build finish.</p>
 
-<p>To access <code>kafka</code>, you will need a <code>zookeeper</code> connection string. <code>zookeeper</code> runs at <code>"{% for kafka_id in kafka_list %}0.0.0.0:{{ zookeeper_client_port_start + kafka_id }}{% if not loop.last %},{% endif %}{% endfor %}"</code>. <code>zookeeper</code> connection string by default is <code>127.0.0.1:2181,127.0.0.1:2182,127.0.0.1:2183</code>.</p>
+<p>To access <code>Kafka</code>, you will need a <code>Zookeeper</code> connection string. <code>Zookeeper</code> runs at <code>"{% for kafka_id in kafka_list %}0.0.0.0:{{ zookeeper_client_port_start + kafka_id }}{% if not loop.last %},{% endif %}{% endfor %}"</code>. <code>Zookeeper</code> connection string by default is <code>127.0.0.1:2181,127.0.0.1:2182,127.0.0.1:2183</code>.</p>
 
-<p>To access <code>kibana</code>, point your browser to <code>127.0.0.1:{{ kibana_port }}</code> which by defaul is <code>127.0.0.1:5601</code>.</p>
+<p>To access <code>Kibana</code>, point your browser to <code>127.0.0.1:{{ kibana_port }}</code> which by defaul is <code>127.0.0.1:5601</code>.</p>
 
-<p>To manage the <code>elasticsearch</code> instance, point your browser to <code>127.0.0.1:{{ elasticsearch_port }}/_plugin/kopf/</code> which by defaul is <code>127.0.0.1:9200/_plugin/kopf/</code>.</p>
+<p>To manage the <code>Elasticsearch</code> instance, point your browser to <code>127.0.0.1:{{ elasticsearch_port }}/_plugin/kopf/</code> which by defaul is <code>127.0.0.1:9200/_plugin/kopf/</code>.</p>
 
 <p>To stop and remove the servers:</p>
 
