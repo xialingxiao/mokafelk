@@ -14,7 +14,7 @@
 --> 
 
 # Ansible controlled Dockerized mock Kafka and Elasticsearch-Logstash-Kibana servers
-It uses `ansible` to spin up a `kafka` cluster. It also spins up a whole `ELK` stack which consumes from the `kafka` containers so that you have near real-time view of your data. This project is designed for testing another github project named `msgglass`, it could be used for testing any `kafka` producer and consumer agents in theory. No security measure is included to protect your data. Even though all port are only open to `127.0.0.1` by default, you are strongly advised to use this project inside an intranet or under safe conditions ONLY. DO NOT use in production.
+It uses `Ansible` to spin up a `Kafka` cluster. It also spins up a whole `ELK` stack which consumes from the `Kafka` containers so that you have near real-time view of your data. This project is designed for testing another github project named `msgglass`, it could be used for testing any `Kafka` producer and consumer agents in theory. No security measure is included to protect your data. Even though all port are only open to `127.0.0.1` by default, you are strongly advised to use this project inside an intranet or under safe conditions ONLY. DO NOT use in production.
 
 This file uses some `jinja2` notations and the variables are specified in `config.yaml`.
 
@@ -29,13 +29,13 @@ To create/restart the servers:
 ```
 ansible-playbook playbook.yaml
 ```
-It would take a long time for `docker` to build the images the first time around depending on the internet speed. It might appear to be stuck at `run compose` but really it is just downloading all the components. Be patient and let the build finish.
+It would take a long time for `Docker` to build the images the first time around depending on the internet speed. It might appear to be stuck at `run compose` but really it is just downloading all the components. Be patient and let the build finish.
 
-To access `kafka`, you will need a `zookeeper` connection string. `zookeeper` runs at `"{% for kafka_id in kafka_list %}0.0.0.0:{{ zookeeper_client_port_start + kafka_id }}{% if not loop.last %},{% endif %}{% endfor %}"`. `zookeeper` connection string by default is `127.0.0.1:2181,127.0.0.1:2182,127.0.0.1:2183`.
+To access `Kafka`, you will need a `Zookeeper` connection string. `Zookeeper` runs at `"{% for kafka_id in kafka_list %}0.0.0.0:{{ zookeeper_client_port_start + kafka_id }}{% if not loop.last %},{% endif %}{% endfor %}"`. `Zookeeper` connection string by default is `127.0.0.1:2181,127.0.0.1:2182,127.0.0.1:2183`.
 
-To access `kibana`, point your browser to `127.0.0.1:{{ kibana_port }}` which by defaul is `127.0.0.1:5601`.
+To access `Kibana`, point your browser to `127.0.0.1:{{ kibana_port }}` which by defaul is `127.0.0.1:5601`.
 
-To manage the `elasticsearch` instance, point your browser to `127.0.0.1:{{ elasticsearch_port }}/_plugin/kopf/` which by defaul is `127.0.0.1:9200/_plugin/kopf/`.
+To manage the `Elasticsearch` instance, point your browser to `127.0.0.1:{{ elasticsearch_port }}/_plugin/kopf/` which by defaul is `127.0.0.1:9200/_plugin/kopf/`.
 
 To stop and remove the servers:
 ```
